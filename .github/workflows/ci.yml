@@ -20,12 +20,10 @@ jobs:
         uses: golangci/golangci-lint-action@v1
         with:
           version: v1.26
-  Test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    name: Test
-    runs-on: ${{ matrix.os }}
+
+  Test-Ubuntu:
+    name: Test-Ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
@@ -35,3 +33,26 @@ jobs:
         env:
           MQTT_TEST_SERVER: ${{ secrets.MQTT_TEST_SERVER }}
 
+  Test-MacOS:
+    name: Test-MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Run Unit tests.
+        run: make test-coverage
+        env:
+          MQTT_TEST_SERVER: ${{ secrets.MQTT_TEST_SERVER }}
+
+  Test-windows:
+    name: Test-MacOS
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Run Unit tests.
+        run: make test-coverage
+        env:
+          MQTT_TEST_SERVER: ${{ secrets.MQTT_TEST_SERVER }}
